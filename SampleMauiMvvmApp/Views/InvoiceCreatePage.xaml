@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleMauiMvvmApp.Views.InvoiceCreatePage"
+             xmlns:model="clr-namespace:SampleMauiMvvmApp.Models"
+             xmlns:modelwrapper="clr-namespace:SampleMauiMvvmApp.ModelWrappers"
+             xmlns:viewmodel="clr-namespace:SampleMauiMvvmApp.ViewModels"
+             x:DataType="viewmodel:InvoiceCreateViewModel"
+             Title="{Binding Title}">
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <Grid
+                ColumnDefinitions="Auto,*"
+                RowDefinitions="*,*,*"
+                ColumnSpacing="5"
+                RowSpacing="5"
+                >
+                <Label Grid.Row="0" Grid.Column="0" Text="Invoice Number: "></Label>
+                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding VmInvoice.InvoiceNo}"></Entry>
+                <Label Grid.Row="1" Grid.Column="0" Text="Invoice Date: "></Label>
+                <DatePicker Grid.Row="1" Grid.Column="1" Date="{Binding VmInvoice.InvoiceDate}"></DatePicker>
+                <Label Grid.Row="2" Grid.Column="0" Text="Invoice Total: "></Label>
+                <Entry Grid.Row="2" Grid.Column="1" Text="{Binding VmInvoice.InvoiceTotal}" Keyboard="Numeric"></Entry>
+            </Grid>
+
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Create" Command="{Binding CreateInvoiceCommand}"></Button>
+                <Button Text="Cancel" Command="{Binding GoBackCommand}"></Button>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

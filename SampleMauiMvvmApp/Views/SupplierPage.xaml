@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleMauiMvvmApp.Views.SupplierPage"
+             xmlns:model="clr-namespace:SampleMauiMvvmApp.Models"
+             xmlns:modelwrapper="clr-namespace:SampleMauiMvvmApp.ModelWrappers"
+             xmlns:viewmodel="clr-namespace:SampleMauiMvvmApp.ViewModels"
+             x:DataType="viewmodel:SupplierViewModel"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Text="Refresh"
+            Command="{Binding GetSuppliersCommand}"
+            >
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="0"
+        RowDefinitions="*,Auto"
+        RowSpacing="0"
+        >
+        <RefreshView
+            Grid.ColumnSpan="2"
+            Command="{Binding GetSuppliersCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            >
+            <CollectionView
+                BackgroundColor="Transparent"
+                Grid.ColumnSpan="2"
+                ItemsSource="{Binding Suppliers}"
+                SelectionMode="None"
+                EmptyView="No Data"
+                >
+                <!--<CollectionView.EmptyView>
+                    <StackLayout>
+                        <Label Text="No data" />
+                    </StackLayout>
+                </CollectionView.EmptyView>-->
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="{OnIdiom Desktop=3, Default=1}">
+                    </GridItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="modelwrapper:SupplierWrapper">
+                        <!--SwipeView inside CollectionView causes the error on WinUI-->
+                        <!--<SwipeView>-->
+                            <!--<SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        Text="Edit"
+                                        BackgroundColor="Orange"
+                                        CommandParameter="{Binding .}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SupplierViewModel}}, Path=UpdateSupplierCommand}"
+                                        ></SwipeItem>
+                                    <SwipeItem
+                                        Text="Delete"
+                                        BackgroundColor="Red"
+                                        CommandParameter="{Binding .}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SupplierViewModel}}, Path=DeleteSupplierCommand}"
+                                        ></SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.RightItems>-->
+                            <Grid Padding="10">
+                                <Frame
+                                    MinimumHeightRequest="100"
+                                    MaximumHeightRequest="400"
+                                    CornerRadius="20"
+                                    >
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            CommandParameter="{Binding Id}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SupplierViewModel}}, Path=GoToDetailsCommand}"
+                                            >
+                                        </TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Grid
+                                        Padding="0"
+                                        ColumnDefinitions="Auto,*,Auto,Auto"
+                                        ColumnSpacing="10"
+                                        RowDefinitions="Auto,Auto,*"
+                                        RowSpacing="10"
+                                        >
+                                        <Label Grid.Row="0" Grid.Column="0" Text="Supplier: "></Label>
+                                        <Label Grid.Row="0" Grid.Column="1">
+                                            <Label.Text>
+                                                <MultiBinding
+                                                    StringFormat="{}{0} (ID# {1})"
+                                                    >
+                                                    <Binding Path="Name"></Binding>
+                                                    <Binding Path="Id"></Binding>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Frame
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Padding="3"
+                                            CornerRadius="5"
+                                            MinimumWidthRequest="50"
+                                            BackgroundColor="Orange"
+                                            IsVisible="{Binding IsUpdated}"
+                                            >
+                                            <Label Text="Updated" HorizontalTextAlignment="Center" Style="{StaticResource TinyLabel}"></Label>
+                                        </Frame>
+                                        <Frame
+                                            Grid.Row="0"
+                                            Grid.Column="3"
+                                            Padding="3"
+                                            CornerRadius="5"
+                                            MinimumWidthRequest="35"
+                                            BackgroundColor="LimeGreen"
+                                            IsVisible="{Binding IsNew}"
+                                            >
+                                            <Label Text="New" HorizontalTextAlignment="Center" Style="{StaticResource TinyLabel}"></Label>
+                                        </Frame>
+                                        <Label Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding Abn, StringFormat='ABN: {0}'}"></Label>
+                                        <HorizontalStackLayout
+                                            Grid.Row="2"
+                                            Grid.ColumnSpan="4"
+                                            Spacing="10"
+                                            >
+                                            <Button
+                                                Text="Edit"
+                                                BackgroundColor="Orange"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SupplierViewModel}}, Path=UpdateSupplierCommand}"
+                                                />
+                                            <Button
+                                                Text="Delete"
+                                                BackgroundColor="Red"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SupplierViewModel}}, Path=DeleteSupplierCommand}"
+                                                />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        <!--</SwipeView>-->
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        
+        <Button
+            Text="Refresh"
+            Command="{Binding GetSuppliersCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Grid.Row="1"
+            Margin="8"
+            >
+        </Button>
+        <Button
+            Text="+Add Supplier"
+            Command="{Binding GoToCreateCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            BackgroundColor="LimeGreen"
+            >
+        </Button>
+
+        <ActivityIndicator
+            IsVisible="{Binding IsBusy}"
+            IsRunning="{Binding IsBusy}"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            >
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleMauiMvvmApp.Views.SupplierDetailPage"
+             xmlns:model="clr-namespace:SampleMauiMvvmApp.Models"
+             xmlns:modelwrapper="clr-namespace:SampleMauiMvvmApp.ModelWrappers"
+             xmlns:viewmodel="clr-namespace:SampleMauiMvvmApp.ViewModels"
+             x:DataType="viewmodel:SupplierDetailViewModel"
+             Title="{Binding Title}">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid
+                ColumnDefinitions="*,Auto,*"
+                RowDefinitions="160,Auto"
+                >
+                <BoxView
+                    Color="{StaticResource Tertiary}"
+                    Grid.ColumnSpan="3"
+                    HeightRequest="160"
+                    HorizontalOptions="FillAndExpand"
+                    />
+
+                <Frame
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    HeightRequest="160"
+                    WidthRequest="600"
+                    CornerRadius="20"
+                    HorizontalOptions="Center"
+                    IsClippedToBounds="True"
+                    Padding="0"
+                    Margin="0,80,0,0"
+                    BackgroundColor="{StaticResource Secondary}"
+                    >
+                    <Label
+                        Text="{Binding Supplier.Name}"
+                        Style="{StaticResource LargeLabel}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        />
+                </Frame>
+            </Grid>
+
+            <Grid
+                ColumnDefinitions="*"
+                ColumnSpacing="0"
+                RowDefinitions="Auto,Auto,*"
+                RowSpacing="0"
+                >                
+                <VerticalStackLayout
+                    Padding="20"
+                    Spacing="10"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    >
+                    <Label Text="{Binding Supplier.Id, StringFormat='ID: {0}'}" Style="{StaticResource MediumLabel}" />
+                    <Label Text="{Binding Supplier.Abn, StringFormat='ABN: {0}'}" Style="{StaticResource MediumLabel}" />
+                    <Label Text="{Binding Supplier.Address, StringFormat='Address: {0}'}" Style="{StaticResource MediumLabel}" />
+                    <Label Text="{Binding Supplier.Email, StringFormat='Email: {0}'}" Style="{StaticResource MediumLabel}" />
+                    <Label Text="{Binding Supplier.Phone, StringFormat='Phone: {0}'}" Style="{StaticResource MediumLabel}" />
+                    <Label Text="{Binding Supplier.Invoices.Count, StringFormat='Invoice Amount: {0}'}" Style="{StaticResource MediumLabel}" />
+                    <Button
+                        Text="+Add Invoice"
+                        BackgroundColor="LimeGreen"
+                        CommandParameter="{Binding Supplier.Id}"
+                        Command="{Binding GoToCreateInvoiceCommand}"
+                        ></Button>
+                </VerticalStackLayout>
+
+                <CollectionView
+                    Grid.Row="1"
+                    BackgroundColor="Transparent"
+                    ItemsSource="{Binding Supplier.Invoices}"
+                    SelectionMode="None"
+                    EmptyView="No invoice data"
+                    >
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="{OnIdiom Desktop=3, Default=1}">
+                        </GridItemsLayout>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="modelwrapper:InvoiceWrapper">
+                            <Grid Padding="10">
+                                <Frame
+                                    MinimumHeightRequest="100"
+                                    MaximumHeightRequest="200"
+                                    CornerRadius="20"
+                                    >
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer>
+                                        </TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Grid
+                                        Padding="0"
+                                        ColumnDefinitions="Auto,*,Auto"
+                                        ColumnSpacing="10"
+                                        RowDefinitions="*,*"
+                                        RowSpacing="10"
+                                        >
+                                        <Label Grid.Row="0" Grid.Column="0" Text="Invoice Number: "></Label>
+                                        <Label Grid.Row="0" Grid.Column="1">
+                                            <Label.Text>
+                                                <MultiBinding
+                                                StringFormat="{}{0} (ID# {1})"
+                                                >
+                                                    <Binding Path="InvoiceNo"></Binding>
+                                                    <Binding Path="Id"></Binding>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Frame
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Padding="3"
+                                            CornerRadius="5"
+                                            MinimumWidthRequest="35"
+                                            BackgroundColor="LimeGreen"
+                                            IsVisible="{Binding IsNew}"
+                                            >
+                                            <Label Text="New" HorizontalTextAlignment="Center" Style="{StaticResource TinyLabel}"></Label>
+                                        </Frame>
+                                        <Label Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding InvoiceDate, StringFormat='Invoice Date: {0}'}"></Label>
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Grid.Row="2" Text="Go Back" Command="{Binding GoBackCommand}" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
