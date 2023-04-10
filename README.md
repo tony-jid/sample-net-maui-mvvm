@@ -1,2 +1,6 @@
-# sample-net-maui-mvvm
-Sample of .NET MAUI app with MVVM and SQLite
+# Sample .NET MAUI app
+.NET MAUI
+.NET MAUI Community Toolkit
+  - MVVM
+  - Messenger Pub/Sub
+SQLite
