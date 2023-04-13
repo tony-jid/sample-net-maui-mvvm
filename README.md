@@ -9,13 +9,13 @@
 - Bogus (Data Faker)
 
 ### Load Supplier Data and View Details
-![image](https://ibb.co/D1jxnx5)
+![image](https://i.ibb.co/WHRb1bg/Load-Supplier-and-View-Details.gif)
 
 ### Edit Supplier
-![image](https://ibb.co/2vCn1xq)
+![image](https://i.ibb.co/hB47Jbs/Edit-Supplier.gif)
 
 ### Create Supplier and Invoices
-![image](https://ibb.co/Hd0P1JC)
+![image](https://i.ibb.co/ySDkG3p/Create-Supplier-and-Invoice.gif)
 
 ### References
 - https://www.youtube.com/watch?v=DuNLR_NJv8U&t=5784s&ab_channel=JamesMontemagno
