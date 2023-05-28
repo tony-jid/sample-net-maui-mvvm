@@ -43,7 +43,12 @@ namespace SampleMauiMvvmApp.ViewModels
         [RelayCommand]
         public async Task GoToCreateInvoiceAsync(int supplierId)
         {
-            await Shell.Current.GoToAsync($"{nameof(InvoiceCreatePage)}?SupplierId={supplierId}", true);
+            await Shell.Current.GoToAsync($"{nameof(InvoiceCreatePage)}?SupplierId={supplierId}", true,
+                new Dictionary<string, object>()
+                {
+                    { nameof(Supplier), this.Supplier }
+                }
+            );
         }
     }
 }

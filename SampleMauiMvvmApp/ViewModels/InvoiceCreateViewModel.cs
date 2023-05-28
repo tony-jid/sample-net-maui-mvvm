@@ -9,6 +9,7 @@ using SampleMauiMvvmApp.Services;
 namespace SampleMauiMvvmApp.ViewModels
 {
     [QueryProperty("SupplierId", "SupplierId")]
+    [QueryProperty("Supplier", "Supplier")]
     public partial class InvoiceCreateViewModel : BaseViewModel
     {
         readonly InvoiceService _invoiceService;
@@ -23,6 +24,9 @@ namespace SampleMauiMvvmApp.ViewModels
 
         [ObservableProperty]
         InvoiceWrapper vmInvoice;
+
+        [ObservableProperty]
+        SupplierWrapper supplier;
 
         [RelayCommand]
         public async Task CreateInvoiceAsync()
